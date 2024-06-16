@@ -9,15 +9,14 @@ namespace FreeMonadDemoTest
         [Test]
         public void TestProgramOutputsHelloWorld()
         {
-            using (var sw = new StringWriter())
-            {
-                Console.SetOut(sw);
-                var program = FreeMonad<ICommand>.WrapAsMonad(new WriteLine("Hello, World!"));
+            using var sw = new StringWriter();
 
-                new ConsoleFreeMonadInterpreter().Interpret(program);
+            Console.SetOut(sw);
+            var program = FreeMonad<ICommand>.WrapAsMonad(new WriteLine("Hello, World!"));
 
-                Assert.AreEqual("Hello, World!\r\n", sw.ToString());
-            }
+            new ConsoleFreeMonadInterpreter().Interpret(program);
+
+            Assert.AreEqual("Hello, World!\r\n", sw.ToString());
         }
     }
 }
