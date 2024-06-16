@@ -1,4 +1,4 @@
-﻿public interface ICommand { }
-
-
-
+﻿namespace FreeMonadDemo
+{
+    public interface ICommand { }
+}
