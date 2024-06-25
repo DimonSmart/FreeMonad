@@ -10,13 +10,21 @@ namespace FreeMonadDemoTest
         public void TestProgramOutputsHelloWorld()
         {
             using var sw = new StringWriter();
-
             Console.SetOut(sw);
-            var program = FreeMonad<ICommand>.WrapAsMonad(new WriteLine("Hello, World!"));
 
-            new ConsoleFreeMonadInterpreter().Interpret(program);
+            var interpreter = new Interpreter();
 
-            Assert.AreEqual("Hello, World!\r\n", sw.ToString());
+            var getAppleText = new GetAppleText();
+            var appleText = interpreter.Execute(getAppleText, Unit.Value);
+
+            var upperCase = new UpperCase(appleText);
+            var upperCaseResult = interpreter.Execute(upperCase, appleText);
+
+            var writeLine = new WriteLine(upperCaseResult);
+            interpreter.Execute(writeLine, upperCaseResult);
+
+            var output = sw.ToString();
+            Assert.AreEqual("APPLE\r\n", output);
         }
     }
 }
