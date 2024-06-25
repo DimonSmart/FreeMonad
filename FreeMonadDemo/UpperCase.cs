@@ -7,8 +7,9 @@
     {
         public string Input { get; }
 
-        public UpperCase(string input) { Input = input; }
-
-        public override string ToString() => $"UpperCase({Input})";
+        public UpperCase(string input)
+        {
+            Input = input;
+        }
     }
 }

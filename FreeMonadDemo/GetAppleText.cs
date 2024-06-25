@@ -8,7 +8,5 @@
         public const string Text = "Apple";
 
         public GetAppleText() { }
-
-        public override string ToString() => Text;
     }
 }
