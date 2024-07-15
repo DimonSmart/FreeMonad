@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents a command to write a line to the console.
     /// </summary>
-    public class WriteLine : ICommand<string, Unit>
+    public class WriteLine<TChainOutput> : CommandBase<Unit, TChainOutput>
     {
         public string Message { get; }
 
