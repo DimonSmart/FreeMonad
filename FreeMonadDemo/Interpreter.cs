@@ -1,23 +1,8 @@
 using FreeMonadDemo;
 
-public class Interpreter
+public class Interpreter : BaseInterpreter
 {
-    public T Interpret<T>(IFree<T> operation)
-    {
-        switch (operation)
-        {
-            case Free<T> free:
-                return Interpret(free.Next);
-
-            case Pure<T> pure:
-                return pure.Value;
-
-            default:
-                throw new InvalidOperationException("Unsupported operation type");
-        }
-    }
-
-    public T Interpret<T>(ICommand<T> command)
+    public override T InterpretCommand<T>(ICommand<T> command)
     {
         switch (command)
         {
