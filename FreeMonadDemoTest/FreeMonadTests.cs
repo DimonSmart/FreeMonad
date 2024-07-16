@@ -47,5 +47,41 @@ namespace FreeMonadDemoTest
                 }
             };
         }
+
+        [Test]
+        public void TestGetTextMakeUppercaseAndWriteLine()
+        {
+            // Redirect console output
+            var output = new StringWriter();
+            Console.SetOut(output);
+
+            // Define the operations chain
+            GetText<Unit> getHelloText = new GetText<Unit>("hello")
+            {
+                NextF = (string s) => new Free<Unit>()
+                {
+                    Next = new UpperCase<Unit>(s)
+                    {
+                        NextF = (s2) => new Free<Unit>()
+                        {
+                            Next = new WriteLine<Unit>(s2)
+                            {
+                                NextF = (s3) => new Pure<Unit>(Unit.Value)
+                            }
+                        }
+                    }
+                }
+            };
+
+            var interpreter = new Interpreter();
+            // Specify the type argument explicitly
+            interpreter.Interpret<Unit>(new Free<Unit>() { Next = getHelloText });
+
+            // Assert that "HELLO" was printed to the console
+            Assert.AreEqual("HELLO\n", output.ToString());
+
+            // Reset console output to standard output
+            Console.SetOut(new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true });
+        }
     }
 }

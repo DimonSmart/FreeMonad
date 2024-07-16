@@ -14,17 +14,4 @@
             return new Pure<TOutput>(value);
         }
     }
-
-    public class Free<TOutput> : IFree<TOutput>
-    {
-        public ICommand<TOutput> Next { get; set; }
-    }
-
-    public interface ICommand<TOutput>
-    {
-    }
-
-    public interface IFree<TOutput>
-    {
-    }
 }

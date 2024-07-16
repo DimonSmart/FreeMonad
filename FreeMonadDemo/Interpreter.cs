@@ -1,30 +1,24 @@
-﻿//namespace FreeMonadDemo
-//{
-//    /// <summary>
-//    /// An interpreter that executes the given commands.
-//    /// </summary>
-//    public class Interpreter : IInterpreter
-//    {
-//        public TOutput Execute<TInput, TOutput>(ICommand<TInput, TOutput> command, TInput input)
-//        {
-//            if (command is WriteLine writeLineCommand)
-//            {
-//                Console.WriteLine(writeLineCommand.Message);
-//                return (TOutput)(object)Unit.Value;
-//            }
+using FreeMonadDemo;
 
-//            if (command is UpperCase upperCaseCommand)
-//            {
-//                return (TOutput)(object)upperCaseCommand.Input.ToUpper();
-//            }
+public class Interpreter
+{
+    public T Interpret<T>(IFree<T> operation)
+    {
+        switch (operation)
+        {
+            case GetText<T> getText:
+                var result = getText.Text;
+                return Interpret(getText.NextF(result));
+            case UpperCase<T> upperCase:
+                var inputText = upperCase.Input.ToUpper();
+                return Interpret(upperCase.NextF(inputText));
+            case WriteLine<T> writeLine:
+                Console.WriteLine(writeLine.Message);
+                    return Interpret(writeLine.NextF(Unit.Value));
+            case Pure<T> pure:
+                return pure.Value;
+        }
 
-//            if (command is GetAppleText getAppleTextCommand)
-//            {
-//                return (TOutput)(object)GetAppleText.Text;
-//            }
-
-//            throw new InvalidOperationException("Unknown command");
-//        }
-//    }
-
-//}
+        return default;
+    }
+}
